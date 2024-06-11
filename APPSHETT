@@ -59,8 +59,7 @@
         <div class="divider"></div>
         <div class="ticket-items">
             <div class="item">
-                <span>Fecha y Hora: 2024-06-01 10:00:00</span> <dh>",select(ventas[nombretiket],[id venta]=[_thisrow].[id ventan]),"</dh>
-            </div>
+                <span>Fecha y Hora: 2024-06-01 10:00:00</span> 
             <div class="item">
                 <span>Vendedor: Juan Pérez</span>
             </div>
