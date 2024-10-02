@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -43,30 +44,51 @@
             height: auto;
             margin-top: 10px;
         }
+        .share-icon {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        .share-icon a img {
+            width: 30px; /* Ajusta el tamaño del ícono de WhatsApp */
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="ticket">
+        <div class="share-icon">
+            <a href="https://api.whatsapp.com/send?text=Hola!%20Aquí%20tienes%20mi%20ticket:%0A%0A%20Nombre%20de%20la%20Empresa%3A%20Nombre%20de%20la%20Empresa%0A%20NIT%3A%20123456789-0%0A%20Dirección%3A%20Dirección%20de%20la%20Empresa%0A%20Teléfono%3A%201234567890%0A%0A%20Fecha%20y%20Hora%3A%202024-06-01%2010:00:00%0A%20Vendedor%3A%20Juan%20Pérez%0A%20Número%20de%20Ticket%3A%20001%0A%0A%20Total%20Artículos%3A%203%0A%20Subtotal%3A%20%2450.00%0A%20IVA%3A%20%249.00%0A%20Total%20a%20Pagar%3A%20%2459.00%0A%20Efectivo%3A%20%2460.00%0A%20Cambio%3A%20%241.00" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2048px-WhatsApp.svg.png" alt="Compartir en WhatsApp" />
+            </a>
+        </div>
         <div class="ticket-header">
             <h2>Nombre de la Empresa</h2>
             <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
-</svg>
+                <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+            </svg>
             <div>NIT: 123456789-0</div>
             <div>Dirección: Dirección de la Empresa</div>
             <div>Teléfono: 1234567890</div>
         </div>
+
         <div class="divider"></div>
+
         <div class="ticket-items">
             <div class="item">
-                <span>Fecha y Hora: 2024-06-01 10:00:00</span> 
-            <div class="item">
-                <span>Vendedor: Juan Pérez</span>
+                <span>Fecha y Hora:</span>
+                <span>2024-06-01 10:00:00</span>
             </div>
             <div class="item">
-                <span>Número de Ticket: 001</span>
+                <span>Vendedor:</span>
+                <span>Juan Pérez</span>
             </div>
+            <div class="item">
+                <span>Número de Ticket:</span>
+                <span>001</span>
+            </div>
+
             <div class="divider"></div>
+
             <div class="item">
                 <span>Cant.</span>
                 <span>Producto</span>
@@ -85,9 +107,11 @@
                 <span>$20.00</span>
                 <span>$40.00</span>
             </div>
-            <h5>Total Articulos 3</h5>
+            <h5>Total Artículos: 3</h5>
         </div>
+
         <div class="divider"></div>
+
         <div class="ticket-footer">
             <div>
                 <span>Subtotal:</span>
@@ -114,41 +138,8 @@
                 <span>$1.00</span>
             </div>
         </div>
-      <h5>Gracias por tu compra.<h5>
-    </div>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket de Venta</title>
-    <style>
-        /* Estilos CSS para el ticket */
-    </style>
-</head>
-<body>
-    <!-- Contenido del ticket -->
-    <script>
-        // Función para imprimir o descargar el ticket en PDF
-        window.onload = function() {
-            // Opción 1: Imprimir automáticamente el ticket
-            window.print();
-            
-            // Opción 2: Descargar automáticamente el ticket en PDF (requiere una librería para convertir HTML a PDF)
-            // Puedes usar librerías como jsPDF, html2pdf, etc.
-            // Ejemplo con jsPDF:
-            /*
-            var doc = new jsPDF();
-            doc.fromHTML(document.body, {
-                callback: function() {
-                    doc.save("ticket.pdf");
-                }
-            });
-            */
-        };
-    </script>
-</body>
-</html>
 
+        <h5>Gracias por tu compra.</h5>
+    </div>
 </body>
 </html>
