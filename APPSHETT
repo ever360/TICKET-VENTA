@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ticket de Venta</title>
     <style>
+        /* Estilos para el ticket */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -21,9 +22,6 @@
         .ticket-header, .ticket-footer {
             text-align: center;
         }
-        .ticket-header h2, .ticket-footer p {
-            margin: 5px 0;
-        }
         .divider {
             border-top: 1px dashed #000;
             margin: 10px 0;
@@ -39,79 +37,51 @@
         .subtotal, .total {
             font-weight: bold;
         }
-        .logo {
-            max-width: 100%;
-            height: auto;
+        .share-icon img {
+            cursor: pointer;
+            width: 50px; /* Ajusta el tamaño del icono */
             margin-top: 10px;
         }
-        .share-icon {
-            text-align: right;
-            margin-bottom: 10px;
-        }
-        .share-icon a img {
-            width: 30px; /* Ajusta el tamaño del ícono de WhatsApp */
-            cursor: pointer;
-        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-    <div class="ticket">
-        <div class="share-icon">
-            <a href="https://api.whatsapp.com/send?text=Hola!%20Aquí%20tienes%20mi%20ticket:%0A%0A%20Nombre%20de%20la%20Empresa%3A%20Nombre%20de%20la%20Empresa%0A%20NIT%3A%20123456789-0%0A%20Dirección%3A%20Dirección%20de%20la%20Empresa%0A%20Teléfono%3A%201234567890%0A%0A%20Fecha%20y%20Hora%3A%202024-06-01%2010:00:00%0A%20Vendedor%3A%20Juan%20Pérez%0A%20Número%20de%20Ticket%3A%20001%0A%0A%20Total%20Artículos%3A%203%0A%20Subtotal%3A%20%2450.00%0A%20IVA%3A%20%249.00%0A%20Total%20a%20Pagar%3A%20%2459.00%0A%20Efectivo%3A%20%2460.00%0A%20Cambio%3A%20%241.00" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2048px-WhatsApp.svg.png" alt="Compartir en WhatsApp" />
-            </a>
-        </div>
-        <div class="ticket-header">
-            <h2>Nombre de la Empresa</h2>
-            <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
-            </svg>
-            <div>NIT: 123456789-0</div>
-            <div>Dirección: Dirección de la Empresa</div>
-            <div>Teléfono: 1234567890</div>
-        </div>
-
+    <div class="ticket" id="ticket">
+        <h2>Nombre de la Empresa</h2>
+        <div>NIT: 123456789-0</div>
+        <div>Dirección: Dirección de la Empresa</div>
+        <div>Teléfono: 1234567890</div>
         <div class="divider"></div>
-
-        <div class="ticket-items">
-            <div class="item">
-                <span>Fecha y Hora:</span>
-                <span>2024-06-01 10:00:00</span>
-            </div>
-            <div class="item">
-                <span>Vendedor:</span>
-                <span>Juan Pérez</span>
-            </div>
-            <div class="item">
-                <span>Número de Ticket:</span>
-                <span>001</span>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="item">
-                <span>Cant.</span>
-                <span>Producto</span>
-                <span>Valor</span>
-                <span>Total</span>
-            </div>
-            <div class="item">
-                <span>1</span>
-                <span>Producto 1</span>
-                <span>$10.00</span>
-                <span>$10.00</span>
-            </div>
-            <div class="item">
-                <span>2</span>
-                <span>Producto 2</span>
-                <span>$20.00</span>
-                <span>$40.00</span>
-            </div>
-            <h5>Total Artículos: 3</h5>
+        <div class="item">
+            <span>Fecha y Hora: 2024-06-01 10:00:00</span>
         </div>
-
+        <div class="item">
+            <span>Vendedor: Juan Pérez</span>
+        </div>
+        <div class="item">
+            <span>Número de Ticket: 001</span>
+        </div>
         <div class="divider"></div>
-
+        <div class="item">
+            <span>Cant.</span>
+            <span>Producto</span>
+            <span>Valor</span>
+            <span>Total</span>
+        </div>
+        <div class="item">
+            <span>1</span>
+            <span>Producto 1</span>
+            <span>$10.00</span>
+            <span>$10.00</span>
+        </div>
+        <div class="item">
+            <span>2</span>
+            <span>Producto 2</span>
+            <span>$20.00</span>
+            <span>$40.00</span>
+        </div>
+        <h5>Total Artículos: 3</h5>
+        <div class="divider"></div>
         <div class="ticket-footer">
             <div>
                 <span>Subtotal:</span>
@@ -138,8 +108,40 @@
                 <span>$1.00</span>
             </div>
         </div>
-
         <h5>Gracias por tu compra.</h5>
     </div>
+
+    <div class="share-icon">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2048px-WhatsApp.svg.png" alt="Compartir en WhatsApp" onclick="shareTicket()" />
+    </div>
+
+    <script>
+        function shareTicket() {
+            html2canvas(document.getElementById('ticket')).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+
+                // Convertir la imagen a blob
+                fetch(imgData)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const formData = new FormData();
+                        formData.append('file', blob, 'ticket.png');
+
+                        // Cambia 'URL_DE_TU_SERVIDOR/api/upload' por la URL de tu servidor
+                        return fetch('URL_DE_TU_SERVIDOR/api/upload', {
+                            method: 'POST',
+                            body: formData
+                        });
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const whatsappUrl = `https://api.whatsapp.com/send?text=Aquí tienes el ticket: ${data.link}`;
+                        window.open(whatsappUrl, '_blank');
+                    })
+                    .catch(err => console.error('Error al subir la imagen:', err));
+            });
+        }
+    </script>
 </body>
 </html>
+
