@@ -5,110 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ticket de Venta</title>
     <style>
-        /* Estilos para el ticket */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.5;
-        }
-        .ticket {
-            width: 280px;
-            margin: 0 auto;
-            padding: 10px;
-            border: 1px solid #000;
-            font-size: 14px;
-        }
-        .ticket-header, .ticket-footer {
-            text-align: center;
-        }
-        .divider {
-            border-top: 1px dashed #000;
-            margin: 10px 0;
-        }
-        .item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 3px;
-        }
-        .item span {
-            flex: 1;
-        }
-        .subtotal, .total {
-            font-weight: bold;
-        }
-        .share-icon img {
-            cursor: pointer;
-            width: 50px; /* Ajusta el tamaño del icono */
-            margin-top: 10px;
-        }
+        /* Tus estilos aquí */
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 </head>
 <body>
     <div class="ticket" id="ticket">
         <h2>Nombre de la Empresa</h2>
-        <div>NIT: 123456789-0</div>
-        <div>Dirección: Dirección de la Empresa</div>
-        <div>Teléfono: 1234567890</div>
-        <div class="divider"></div>
-        <div class="item">
-            <span>Fecha y Hora: 2024-06-01 10:00:00</span>
-        </div>
-        <div class="item">
-            <span>Vendedor: Juan Pérez</span>
-        </div>
-        <div class="item">
-            <span>Número de Ticket: 001</span>
-        </div>
-        <div class="divider"></div>
-        <div class="item">
-            <span>Cant.</span>
-            <span>Producto</span>
-            <span>Valor</span>
-            <span>Total</span>
-        </div>
-        <div class="item">
-            <span>1</span>
-            <span>Producto 1</span>
-            <span>$10.00</span>
-            <span>$10.00</span>
-        </div>
-        <div class="item">
-            <span>2</span>
-            <span>Producto 2</span>
-            <span>$20.00</span>
-            <span>$40.00</span>
-        </div>
-        <h5>Total Artículos: 3</h5>
-        <div class="divider"></div>
-        <div class="ticket-footer">
-            <div>
-                <span>Subtotal:</span>
-                <span class="subtotal">$50.00</span>
-            </div>
-            <div>
-                <span>Descuentos:</span>
-                <span>$0.00</span>
-            </div>
-            <div>
-                <span>IVA:</span>
-                <span>$9.00</span>
-            </div>
-            <div>
-                <span>Total a Pagar:</span>
-                <span class="total">$59.00</span>
-            </div>
-            <div>
-                <span>Efectivo:</span>
-                <span>$60.00</span>
-            </div>
-            <div>
-                <span>Cambio:</span>
-                <span>$1.00</span>
-            </div>
-        </div>
-        <h5>Gracias por tu compra.</h5>
+        <!-- Contenido del ticket -->
     </div>
 
     <div class="share-icon">
@@ -119,29 +23,35 @@
         function shareTicket() {
             html2canvas(document.getElementById('ticket')).then(canvas => {
                 const imgData = canvas.toDataURL('image/png');
+                const blob = dataURItoBlob(imgData);
 
-                // Convertir la imagen a blob
-                fetch(imgData)
-                    .then(res => res.blob())
-                    .then(blob => {
-                        const formData = new FormData();
-                        formData.append('file', blob, 'ticket.png');
+                const formData = new FormData();
+                formData.append('file', blob, 'ticket.png');
 
-                        // Cambia 'URL_DE_TU_SERVIDOR/api/upload' por la URL de tu servidor
-                        return fetch('URL_DE_TU_SERVIDOR/api/upload', {
-                            method: 'POST',
-                            body: formData
-                        });
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        const whatsappUrl = `https://api.whatsapp.com/send?text=Aquí tienes el ticket: ${data.link}`;
-                        window.open(whatsappUrl, '_blank');
-                    })
-                    .catch(err => console.error('Error al subir la imagen:', err));
+                // Reemplaza esto con tu URL real
+                fetch('URL_DE_TU_SERVIDOR/api/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const whatsappUrl = `https://api.whatsapp.com/send?text=Aquí tienes el ticket: ${data.link}`;
+                    window.open(whatsappUrl, '_blank');
+                })
+                .catch(err => console.error('Error al subir la imagen:', err));
             });
+        }
+
+        function dataURItoBlob(dataURI) {
+            const byteString = atob(dataURI.split(',')[1]);
+            const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: mimeString });
         }
     </script>
 </body>
 </html>
-
