@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket de Venta</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comprobante de Pago</title>
+  <style>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -143,46 +144,33 @@
 
         <h5>Gracias por tu compra.</h5>
     </div>
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body>
+  <div class="ticket" id="ticket">
+    </div>
 
-    <!-- Botones -->
-    <button id="share-btn">Generar Imagen del Comprobante</button>
-    <a id="download-link" style="display:none;">Descargar Imagen</a>
+  <button id="share-btn">Compartir Comprobante</button>
 
-    <!-- Mensaje por WhatsApp -->
-    <button id="whatsapp-btn">Compartir por WhatsApp</button>
+  <script>
+    document.getElementById('share-btn').addEventListener('click', function() {
+      const ticketElement = document.getElementById('ticket');
 
-    <script>
-        // Función para capturar el ticket y convertirlo en imagen
-        document.getElementById('share-btn').addEventListener('click', function() {
-            // Asegurarnos de que el ticket esté visible
-            const ticketElement = document.getElementById('ticket');
-            
-            html2canvas(ticketElement, {
-                useCORS: true,  // Asegurarse de que se capturen imágenes externas
-                scale: 2        // Mejorar la calidad de la imagen generada
-            }).then(function(canvas) {
-                // Convertir el canvas a imagen en base64
-                var imgData = canvas.toDataURL('image/png');
-                
-                // Crear un enlace para descargar la imagen
-                var link = document.getElementById('download-link');
-                link.href = imgData;
-                link.download = 'ticket.png';
-                link.innerText = 'Descargar Imagen';
-                link.style.display = 'block';
-            }).catch(function(error) {
-                console.error('Error al generar la imagen:', error);
-            });
-        });
+      html2canvas(ticketElement, {
+        scale: 3 // Ajusta el valor del escalado según tus necesidades
+      }).then(function(canvas) {
+        var imgData = canvas.toDataURL('image/png');
 
-        // Función para generar enlace de WhatsApp
-        document.getElementById('whatsapp-btn').addEventListener('click', function() {
-            var message = 'Aquí tienes tu comprobante: ' +
-                          'Total: $59.00' + '\n' + 
-                          'Fecha y Hora: 2024-06-01 10:00:00';
-            var url = "https://api.whatsapp.com/send?text=" + encodeURIComponent(message);
-            window.open(url, '_blank');
-        });
-    </script>
+        // Crear un enlace temporal y mostrarlo en una nueva ventana
+        var link = document.createElement('a');
+        link.href = imgData;
+        link.download = 'comprobante.png';
+        link.target = '_blank'; // Abre en una nueva pestaña
+        link.click();
+      });
+    });
+  </script>
 </body>
 </html>
+
