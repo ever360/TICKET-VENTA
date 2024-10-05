@@ -49,7 +49,7 @@
             margin-bottom: 10px;
         }
         .share-icon a img {
-            width: 30px; /* Ajusta el tamaño del ícono de WhatsApp */
+            width: 30px;
             cursor: pointer;
         }
         button {
@@ -59,7 +59,7 @@
         }
     </style>
     <!-- Librería para convertir HTML a imagen -->
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body>
     <div class="ticket" id="ticket">
@@ -69,7 +69,7 @@
                 <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
             </svg>
             <div>NIT: 123456789-0</div>
-            <div>Dirección: Dirección de la Empresa</div>
+            <div>Dirección: Mi Empresa</div>
             <div>Teléfono: 1234567890</div>
         </div>
 
@@ -82,7 +82,7 @@
             </div>
             <div class="item">
                 <span>Vendedor:</span>
-                <span>Juan Pérez</span>
+                <span>Ever Moncada</span>
             </div>
             <div class="item">
                 <span>Número de Ticket:</span>
@@ -154,7 +154,13 @@
     <script>
         // Función para capturar el ticket y convertirlo en imagen
         document.getElementById('share-btn').addEventListener('click', function() {
-            html2canvas(document.getElementById('ticket')).then(function(canvas) {
+            // Asegurarnos de que el ticket esté visible
+            const ticketElement = document.getElementById('ticket');
+            
+            html2canvas(ticketElement, {
+                useCORS: true,  // Asegurarse de que se capturen imágenes externas
+                scale: 2        // Mejorar la calidad de la imagen generada
+            }).then(function(canvas) {
                 // Convertir el canvas a imagen en base64
                 var imgData = canvas.toDataURL('image/png');
                 
@@ -164,6 +170,8 @@
                 link.download = 'ticket.png';
                 link.innerText = 'Descargar Imagen';
                 link.style.display = 'block';
+            }).catch(function(error) {
+                console.error('Error al generar la imagen:', error);
             });
         });
 
