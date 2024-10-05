@@ -52,15 +52,25 @@
             width: 30px; /* Ajusta el tamaño del ícono de WhatsApp */
             cursor: pointer;
         }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-    <div class="ticket">
-        <div class="share-icon">
-            <a href="https://api.whatsapp.com/send?text=Hola!%20Aquí%20tienes%20mi%20ticket:%0A%0A%20Nombre%20de%20la%20Empresa%3A%20Nombre%20de%20la%20Empresa%0A%20NIT%3A%20123456789-0%0A%20Dirección%3A%20Dirección%20de%20la%20Empresa%0A%20Teléfono%3A%201234567890%0A%0A%20Fecha%20y%20Hora%3A%202024-06-01%2010:00:00%0A%20Vendedor%3A%20Juan%20Pérez%0A%20Número%20de%20Ticket%3A%20001%0A%0A%20Total%20Artículos%3A%203%0A%20Subtotal%3A%20%2450.00%0A%20IVA%3A%20%249.00%0A%20Total%20a%20Pagar%3A%20%2459.00%0A%20Efectivo%3A%20%2460.00%0A%20Cambio%3A%20%241.00" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2048px-WhatsApp.svg.png" alt="Compartir en WhatsApp" />
-            </a>
-        </div>
+    <div class="ticket" id="ticket">
         <div class="ticket-header">
             <h2>Nombre de la Empresa</h2>
             <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
@@ -141,6 +151,42 @@
 
         <h5>Gracias por tu compra.</h5>
     </div>
+
+    <!-- Botón para capturar y compartir el comprobante -->
+    <button onclick="capturarYCompartir()">Compartir Comprobante</button>
+
+    <script>
+        // Función para capturar el comprobante como imagen y compartirlo
+        function capturarYCompartir() {
+            var elemento = document.getElementById('ticket');
+
+            // Captura el contenido del ticket como imagen
+            html2canvas(elemento).then(function(canvas) {
+                var imagen = canvas.toDataURL('image/png');
+                
+                // Descargar la imagen automáticamente
+                var enlaceDescarga = document.createElement('a');
+                enlaceDescarga.href = imagen;
+                enlaceDescarga.download = 'comprobante.png';
+                enlaceDescarga.click();
+
+                // Intentar compartir la imagen usando Web Share API (si está disponible)
+                if (navigator.share) {
+                    canvas.toBlob(function(blob) {
+                        var archivo = new File([blob], 'comprobante.png', { type: 'image/png' });
+                        navigator.share({
+                            title: 'Comprobante de Pago',
+                            text: 'Aquí tienes tu comprobante:',
+                            files: [archivo]
+                        }).catch((error) => {
+                            console.log('Error al compartir:', error);
+                        });
+                    });
+                } else {
+                    alert('La opción de compartir no está disponible en este dispositivo.');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
-
