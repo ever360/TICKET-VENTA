@@ -53,21 +53,13 @@
             cursor: pointer;
         }
         button {
-            display: block;
-            margin: 20px auto;
+            margin-top: 20px;
             padding: 10px 20px;
             font-size: 16px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <!-- Librería para convertir HTML a imagen -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
     <div class="ticket" id="ticket">
@@ -152,41 +144,24 @@
         <h5>Gracias por tu compra.</h5>
     </div>
 
-    <!-- Botón para capturar y compartir el comprobante -->
-    <button onclick="capturarYCompartir()">Compartir Comprobante</button>
+    <!-- Botón para compartir el ticket como imagen -->
+    <button id="share-btn">Compartir Comprobante</button>
 
     <script>
-        // Función para capturar el comprobante como imagen y compartirlo
-        function capturarYCompartir() {
-            var elemento = document.getElementById('ticket');
+        // Función para capturar el ticket y convertirlo en imagen
+        document.getElementById('share-btn').addEventListener('click', function() {
+            html2canvas(document.getElementById('ticket')).then(function(canvas) {
+                // Convertir el canvas a imagen en base64
+                var imgData = canvas.toDataURL('image/png');
 
-            // Captura el contenido del ticket como imagen
-            html2canvas(elemento).then(function(canvas) {
-                var imagen = canvas.toDataURL('image/png');
+                // Crear un enlace a WhatsApp con la imagen en formato base64
+                var message = 'Aquí tienes tu comprobante: ';
+                var url = "https://api.whatsapp.com/send?text=" + encodeURIComponent(message) + "&body=" + encodeURIComponent(imgData);
                 
-                // Descargar la imagen automáticamente
-                var enlaceDescarga = document.createElement('a');
-                enlaceDescarga.href = imagen;
-                enlaceDescarga.download = 'comprobante.png';
-                enlaceDescarga.click();
-
-                // Intentar compartir la imagen usando Web Share API (si está disponible)
-                if (navigator.share) {
-                    canvas.toBlob(function(blob) {
-                        var archivo = new File([blob], 'comprobante.png', { type: 'image/png' });
-                        navigator.share({
-                            title: 'Comprobante de Pago',
-                            text: 'Aquí tienes tu comprobante:',
-                            files: [archivo]
-                        }).catch((error) => {
-                            console.log('Error al compartir:', error);
-                        });
-                    });
-                } else {
-                    alert('La opción de compartir no está disponible en este dispositivo.');
-                }
+                // Abrir el enlace en una nueva ventana o pestaña
+                window.open(url, '_blank');
             });
-        }
+        });
     </script>
 </body>
 </html>
